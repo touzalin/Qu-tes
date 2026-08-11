@@ -1,0 +1,3246 @@
+<!DOCTYPE html><html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mes Quêtes</title>
+
+<link rel="manifest" href="./manifest.json">
+<meta name="theme-color" content="#FFD900">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bangers&family=Comic+Neue:wght@400;700&display=swap" rel="stylesheet"><style>
+*{box-sizing:border-box}
+
+:root{
+  --bg1:#202020;
+  --bg2:#070707;
+  --panel:#111;
+  --panel2:#151515;
+  --border:#333;
+  --text:#fff;
+  --muted:#aaa;
+  --primary:#FFD900;
+  --blue:#1268FF;
+  --red:#FF1E1E;
+  --green:#20F060;
+  --purple:#A855F7;
+  --orange:#FF8A00;
+}
+
+body{
+  margin:0;
+  min-height:100vh;
+  padding:16px 12px 40px;
+  background:radial-gradient(circle at top,var(--bg1),var(--bg2) 72%);
+  color:var(--text);
+  font-family:"Comic Neue",cursive;
+}
+
+.container{width:100%;max-width:760px;margin:auto}
+button,input,textarea,select{font-family:inherit}
+button{-webkit-tap-highlight-color:transparent}
+
+body.theme-cyber{
+  --bg1:#061b25;--bg2:#020609;--panel:#07151b;--panel2:#0b2028;
+  --border:#16404d;--primary:#00F5FF;--blue:#00AEEF;--red:#FF3864;
+  --green:#00FF9C;--purple:#B44CFF;--orange:#FF9D00;
+}
+
+body.theme-arcane{
+  --bg1:#25133d;--bg2:#08030f;--panel:#170d25;--panel2:#211335;
+  --border:#4b2b68;--primary:#D8A7FF;--blue:#8B7CFF;--red:#FF4D8D;
+  --green:#65F7B1;--purple:#B46CFF;--orange:#FFB15C;
+}
+
+body.theme-forest{
+  --bg1:#13291d;--bg2:#050b07;--panel:#0e1b13;--panel2:#14251a;
+  --border:#2d5137;--primary:#A7E85D;--blue:#55B8FF;--red:#FF5A5A;
+  --green:#55F28A;--purple:#B28CFF;--orange:#EBA33F;
+}
+
+body.theme-demon{
+  --bg1:#351010;--bg2:#090303;--panel:#190909;--panel2:#230d0d;
+  --border:#552020;--primary:#FF5A36;--blue:#657CFF;--red:#FF2020;
+  --green:#5CFF70;--purple:#D05CFF;--orange:#FF8A00;
+}
+
+body.theme-minimal{
+  --bg1:#343434;--bg2:#171717;--panel:#202020;--panel2:#282828;
+  --border:#555;--primary:#FFFFFF;--blue:#AFC7FF;--red:#FF7777;
+  --green:#8AFFA5;--purple:#D0A7FF;--orange:#FFBD70;
+}
+
+h1{
+  margin:0;
+  text-align:center;
+  font-family:"Bangers",cursive;
+  font-size:52px;
+  letter-spacing:2px;
+  color:var(--primary);
+  text-shadow:3px 3px #000;
+}
+
+.subtitle{
+  text-align:center;
+  margin:0 0 14px;
+  font-family:"Bangers",cursive;
+  font-size:19px;
+  color:#ddd;
+  letter-spacing:1px;
+}
+
+.quote{
+  text-align:center;
+  min-height:26px;
+  margin:4px 0 13px;
+  color:var(--muted);
+  font-size:14px;
+  font-style:italic;
+}
+
+.level-card{
+  padding:11px 13px;
+  margin-bottom:9px;
+  background:var(--panel);
+  border:2px solid var(--border);
+  border-radius:11px;
+}
+
+.level-line{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  font-family:"Bangers",cursive;
+  font-size:20px;
+  letter-spacing:1px;
+}
+
+.level-name{color:var(--primary)}
+.level-number{color:#fff}
+
+.xp-text{
+  text-align:right;
+  margin-top:3px;
+  color:var(--muted);
+  font-family:"Bangers",cursive;
+  font-size:15px;
+}
+
+.level-bar{
+  height:10px;
+  margin-top:6px;
+  background:#292929;
+  border-radius:10px;
+  overflow:hidden;
+}
+
+#levelFill{
+  width:0%;
+  height:100%;
+  background:var(--primary);
+  border-radius:10px;
+  transition:width .5s ease;
+  box-shadow:0 0 9px var(--primary);
+}
+
+.counter{
+  display:flex;
+  gap:7px;
+  margin-bottom:7px;
+}
+
+.counter-box{
+  flex:1;
+  min-width:0;
+  padding:9px 8px;
+  border-radius:9px;
+  font-family:"Bangers",cursive;
+  font-size:17px;
+  letter-spacing:1px;
+}
+
+.main-counter{
+  background:#701010;
+  border:2px solid var(--red);
+  text-align:left;
+  cursor:pointer;
+}
+
+.main-counter.selected{
+  background:#A91414;
+  box-shadow:0 0 13px rgba(255,30,30,.5);
+}
+
+.secondary-counter{
+  background:#27316F;
+  border:2px solid var(--blue);
+  text-align:right;
+  cursor:pointer;
+}
+
+.secondary-counter.selected{
+  background:#3549A5;
+  box-shadow:0 0 13px rgba(83,109,255,.5);
+}
+
+.remaining{
+  background:#1268FF;
+  border:2px solid var(--blue);
+  text-align:left;
+}
+
+.completed{
+  background:var(--primary);
+  border:2px solid var(--primary);
+  color:#000;
+  text-align:right;
+}
+
+.add-box{
+  display:flex;
+  gap:7px;
+  margin:13px 0 10px;
+}
+
+#input{
+  flex:1;
+  min-width:0;
+  padding:9px 11px;
+  background:var(--panel);
+  color:#fff;
+  border:2px solid var(--blue);
+  border-radius:8px;
+  outline:none;
+  font-size:16px;
+}
+
+#input:focus{border-color:var(--primary)}
+
+.add-btn{
+  padding:4px 12px;
+  border:0;
+  border-radius:7px;
+  background:var(--primary);
+  color:#000;
+  cursor:pointer;
+  font-family:"Bangers",cursive;
+  font-size:17px;
+}
+
+.search-box{margin-bottom:12px}
+
+#search{
+  width:100%;
+  padding:10px 12px;
+  background:var(--panel);
+  color:#fff;
+  border:2px solid var(--border);
+  border-radius:8px;
+  outline:none;
+  font-size:16px;
+}
+
+#search:focus{border-color:var(--primary)}
+
+.section-title{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  margin:15px 0 7px;
+  font-family:"Bangers",cursive;
+  font-size:21px;
+  letter-spacing:1px;
+}
+
+.section-title.active{color:var(--primary)}
+.section-title.finished{color:var(--green)}
+
+.section-line{
+  flex:1;
+  height:2px;
+  background:var(--border);
+}
+
+ul{
+  list-style:none;
+  padding:0;
+  margin:0;
+}
+
+li{
+  position:relative;
+  overflow:hidden;
+  margin-bottom:9px;
+  padding:12px;
+  border-radius:12px;
+  background:var(--panel2);
+  border:2px solid #292929;
+  --progress:0%;
+  --progress-color:var(--primary);
+}
+
+li::before{
+  content:"";
+  position:absolute;
+  top:0;
+  left:0;
+  bottom:0;
+  width:var(--progress);
+  background:var(--progress-color);
+  opacity:.46;
+  transition:width .45s ease,background .3s ease;
+  z-index:0;
+}
+
+li > *{
+  position:relative;
+  z-index:1;
+}
+
+li.main-quest{border-left:5px solid var(--red)}
+li.secondary-quest{border-left:5px solid var(--blue)}
+
+li.done{
+  opacity:.74;
+  border-color:#285536;
+}
+
+li.done .quest-name{
+  text-decoration:line-through;
+  color:#aaa;
+}
+
+li.current-quest{
+  box-shadow:0 0 0 2px var(--primary),0 0 16px rgba(255,217,0,.25);
+}
+
+li.progress-complete::before{
+  opacity:.67;
+  box-shadow:0 0 22px var(--progress-color);
+}
+
+li.favorite-quest{
+  border-top-color:var(--primary);
+}
+
+.quest-top{
+  display:flex;
+  align-items:center;
+  gap:9px;
+}
+
+.quest-content{
+  flex:1;
+  min-width:0;
+  cursor:pointer;
+}
+
+.quest-name{
+  font-family:"Bangers",cursive;
+  font-size:23px;
+  letter-spacing:1px;
+  word-break:break-word;
+}
+
+.quest-label{
+  display:inline-block;
+  margin-top:5px;
+  padding:3px 7px;
+  border-radius:5px;
+  font-family:"Bangers",cursive;
+  font-size:10px;
+  letter-spacing:1px;
+}
+
+.main-label{background:var(--red)}
+.secondary-label{background:var(--blue)}
+.current-label{background:var(--primary);color:#000}
+
+.difficulty{
+  display:inline-block;
+  margin-left:4px;
+  padding:3px 7px;
+  border-radius:5px;
+  font-family:"Bangers",cursive;
+  font-size:10px;
+  letter-spacing:1px;
+}
+
+.easy{background:#20D95B;color:#000}
+.medium{background:var(--orange);color:#000}
+.hard{background:var(--red);color:#fff}
+
+.quest-xp{
+  margin-top:5px;
+  font-size:12px;
+  color:var(--muted);
+}
+
+.finished-date{
+  margin-top:5px;
+  color:#999;
+  font-size:12px;
+}
+
+.fire{font-size:16px}
+
+.favorite-btn{
+  flex-shrink:0;
+  border:0;
+  background:transparent;
+  color:#666;
+  font-size:27px;
+  line-height:1;
+  padding:2px;
+  cursor:pointer;
+}
+
+.favorite-btn.active{
+  color:var(--primary);
+  text-shadow:0 0 10px var(--primary);
+}
+
+.checkbox,
+.subtask-checkbox{
+  appearance:none;
+  -webkit-appearance:none;
+  flex-shrink:0;
+  background:#080808;
+  border:3px solid #666;
+  cursor:pointer;
+  position:relative;
+}
+
+.checkbox{
+  width:30px;
+  height:30px;
+  border-radius:9px;
+}
+
+.checkbox:checked,
+.subtask-checkbox:checked{
+  background:var(--primary);
+  border-color:var(--primary);
+}
+
+.checkbox:checked::after{
+  content:"✓";
+  position:absolute;
+  left:4px;
+  top:-3px;
+  color:#000;
+  font-size:23px;
+  font-weight:bold;
+}
+
+.delete{
+  border:0;
+  background:#252525;
+  color:#aaa;
+  padding:6px 7px;
+  border-radius:6px;
+  cursor:pointer;
+}
+
+.delete:hover{
+  background:var(--red);
+  color:#fff;
+}
+
+.order-buttons{
+  display:flex;
+  gap:4px;
+  margin-top:8px;
+}
+
+.order-btn{
+  border:0;
+  background:#222;
+  color:#aaa;
+  border-radius:5px;
+  padding:3px 7px;
+  cursor:pointer;
+  font-size:12px;
+}
+
+.order-btn:hover{
+  background:var(--primary);
+  color:#000;
+}
+
+.empty{
+  text-align:center;
+  padding:24px 10px;
+  color:#777;
+  font-family:"Bangers",cursive;
+  font-size:21px;
+}
+
+.clear,.reset{
+  width:100%;
+  margin-top:12px;
+  padding:8px;
+  background:transparent;
+  border:1px solid #333;
+  border-radius:8px;
+  color:#777;
+  cursor:pointer;
+}
+
+.undo-delete,.undo-reset{
+  display:none;
+  width:100%;
+  margin-top:7px;
+  padding:8px;
+  background:#151515;
+  border:1px solid var(--green);
+  border-radius:8px;
+  color:var(--green);
+  cursor:pointer;
+  font-family:"Bangers",cursive;
+  font-size:16px;
+}
+
+.menu-buttons{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:7px;
+  margin:14px 0;
+}
+
+.menu-btn{
+  padding:9px 5px;
+  border:2px solid var(--border);
+  border-radius:8px;
+  background:var(--panel);
+  color:#fff;
+  cursor:pointer;
+  font-family:"Bangers",cursive;
+  font-size:15px;
+}
+
+.menu-btn:hover{
+  border-color:var(--primary);
+  color:var(--primary);
+}
+
+#pageDetail,#pageStats,#pageBadges,#pageHistorique,#pageThemes{
+  display:none;
+}
+
+.back-btn{
+  border:0;
+  background:var(--blue);
+  color:#fff;
+  padding:8px 13px;
+  border-radius:8px;
+  cursor:pointer;
+  margin-bottom:13px;
+  font-family:"Bangers",cursive;
+  font-size:17px;
+}
+
+.detail-card,.page-card{
+  background:var(--panel);
+  border-radius:15px;
+  padding:18px;
+  border-top:5px solid var(--primary);
+}
+
+.detail-title{
+  margin:0 0 17px;
+  color:var(--primary);
+  font-family:"Bangers",cursive;
+  font-size:35px;
+  word-break:break-word;
+}
+
+.field{margin-bottom:15px}
+
+.field label{
+  display:block;
+  margin-bottom:6px;
+  color:var(--blue);
+  font-family:"Bangers",cursive;
+  font-size:19px;
+}
+
+.field input,.field textarea,.field select{
+  width:100%;
+  padding:10px;
+  background:#080808;
+  color:#fff;
+  border:2px solid var(--border);
+  border-radius:8px;
+  outline:none;
+  font-size:16px;
+}
+
+.field textarea{
+  min-height:170px;
+  resize:vertical;
+  line-height:1.5;
+}
+
+.values{
+  display:flex;
+  gap:10px;
+}
+
+.subtasks{margin-bottom:15px}
+
+.subtasks-title{
+  color:var(--primary);
+  font-family:"Bangers",cursive;
+  font-size:19px;
+  margin-bottom:7px;
+}
+
+.subtask{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  padding:7px;
+  margin-bottom:5px;
+  background:#1A1A1A;
+  border-radius:7px;
+}
+
+.subtask-checkbox{
+  width:24px;
+  height:24px;
+  border-radius:7px;
+  border-width:2px;
+}
+
+.subtask-checkbox:checked::after{
+  content:"✓";
+  position:absolute;
+  left:3px;
+  top:-2px;
+  color:#000;
+  font-size:18px;
+}
+
+.subtask-text{
+  flex:1;
+  font-size:15px;
+}
+
+.subtask.completed .subtask-text{
+  text-decoration:line-through;
+  color:#777;
+}
+
+.no-subtasks{
+  color:#666;
+  font-style:italic;
+}
+
+.detail-progress-bar{
+  position:relative;
+  width:100%;
+  height:36px;
+  background:#222;
+  border:2px solid #333;
+  border-radius:18px;
+  overflow:hidden;
+}
+
+#detailProgressFill{
+  width:0%;
+  height:100%;
+  border-radius:16px;
+  transition:width .45s ease,background .3s ease,box-shadow .3s ease;
+}
+
+#detailProgressText{
+  position:absolute;
+  inset:0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:#fff;
+  font-family:"Bangers",cursive;
+  font-size:20px;
+  text-shadow:2px 2px #000;
+}
+
+.progress-0{background:var(--primary)}
+.progress-25{background:#FF5F91}
+.progress-50{background:#FF8A00}
+.progress-75{background:#00BFFF}
+.progress-100{
+  background:var(--green);
+  box-shadow:0 0 8px var(--green),0 0 20px var(--green);
+}
+
+.page-title{
+  margin:0 0 16px;
+  color:var(--primary);
+  font-family:"Bangers",cursive;
+  font-size:35px;
+}
+
+.stats-grid,.badges-grid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:9px;
+}
+
+.stat{
+  padding:14px 10px;
+  background:var(--panel2);
+  border:2px solid #292929;
+  border-radius:10px;
+  text-align:center;
+}
+
+.stat-number{
+  display:block;
+  color:var(--primary);
+  font-family:"Bangers",cursive;
+  font-size:30px;
+}
+
+.stat-label{
+  color:#aaa;
+  font-size:13px;
+}
+
+.stat-main{border-color:var(--red)}
+.stat-main .stat-number{color:var(--red)}
+.stat-secondary{border-color:var(--blue)}
+.stat-secondary .stat-number{color:var(--blue)}
+.stat-green{border-color:var(--green)}
+.stat-green .stat-number{color:var(--green)}
+.stat-favorite{border-color:var(--primary)}
+
+.badge{
+  padding:14px 8px;
+  text-align:center;
+  background:var(--panel2);
+  border:2px solid #333;
+  border-radius:10px;
+  opacity:.32;
+  filter:grayscale(1);
+}
+
+.badge.unlocked{
+  opacity:1;
+  filter:none;
+  border-color:var(--primary);
+}
+
+.badge-icon{
+  display:block;
+  font-size:35px;
+  margin-bottom:5px;
+}
+
+.badge-name{
+  display:block;
+  font-family:"Bangers",cursive;
+  font-size:18px;
+  color:var(--primary);
+}
+
+.badge-description{
+  color:#999;
+  font-size:12px;
+}
+
+.history-item{
+  padding:11px;
+  margin-bottom:7px;
+  background:var(--panel2);
+  border-radius:8px;
+  border-left:4px solid var(--green);
+}
+
+.history-name{
+  font-family:"Bangers",cursive;
+  font-size:19px;
+}
+
+.history-date{
+  color:#888;
+  font-size:13px;
+}
+
+.history-xp{
+  color:var(--primary);
+  font-size:13px;
+}
+
+.theme-grid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:10px;
+}
+
+.theme-btn{
+  min-height:90px;
+  padding:12px;
+  border:2px solid var(--border);
+  border-radius:12px;
+  background:var(--panel2);
+  color:#fff;
+  cursor:pointer;
+  text-align:left;
+}
+
+.theme-btn.active{
+  border-color:var(--primary);
+}
+
+.theme-preview{
+  height:30px;
+  border-radius:7px;
+  margin-bottom:8px;
+}
+
+.preview-default{background:linear-gradient(90deg,#FFD900,#1268FF,#FF1E1E)}
+.preview-cyber{background:linear-gradient(90deg,#00F5FF,#00FF9C,#B44CFF)}
+.preview-arcane{background:linear-gradient(90deg,#D8A7FF,#8B7CFF,#FF4D8D)}
+.preview-forest{background:linear-gradient(90deg,#A7E85D,#55F28A,#55B8FF)}
+.preview-demon{background:linear-gradient(90deg,#FF2020,#FF5A36,#D05CFF)}
+.preview-minimal{background:linear-gradient(90deg,#fff,#AFC7FF,#8AFFA5)}
+
+.theme-name{
+  font-family:"Bangers",cursive;
+  font-size:18px;
+}
+
+.theme-description{
+  color:#999;
+  font-size:12px;
+}
+
+#celebration{
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  z-index:9999;
+  overflow:hidden;
+  display:none;
+}
+
+.celebration-wave{
+  position:absolute;
+  left:-20%;
+  bottom:-35%;
+  width:140%;
+  height:35%;
+  background:radial-gradient(ellipse,rgba(32,240,96,.95),rgba(32,240,96,.45),transparent 70%);
+  filter:blur(10px);
+  animation:waveUp 1.5s ease-out forwards;
+}
+
+@keyframes waveUp{
+  0%{bottom:-35%;opacity:0}
+  20%{opacity:1}
+  100%{bottom:105%;opacity:0}
+}
+
+.particle{
+  position:absolute;
+  bottom:-30px;
+  width:7px;
+  height:7px;
+  border-radius:50%;
+  background:var(--green);
+  box-shadow:0 0 10px var(--green);
+  animation:particleUp 1.5s ease-out forwards;
+}
+
+@keyframes particleUp{
+  0%{transform:translateY(0) scale(.4);opacity:0}
+  20%{opacity:1}
+  100%{transform:translateY(-110vh) scale(1.3);opacity:0}
+}
+
+#badgeUnlock,#levelUp{
+  position:fixed;
+  inset:0;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  z-index:10001;
+  pointer-events:none;
+  background:rgba(0,0,0,.72);
+}
+
+.badge-unlock-box,.level-up-box{
+  text-align:center;
+  padding:25px;
+}
+
+.badge-unlock-icon{
+  font-size:85px;
+  filter:drop-shadow(0 0 15px var(--primary));
+}
+
+.badge-unlock-title,.level-up-title{
+  font-family:"Bangers",cursive;
+  font-size:48px;
+  color:var(--primary);
+  text-shadow:3px 3px #000,0 0 18px var(--primary);
+}
+
+.badge-unlock-name{
+  font-family:"Bangers",cursive;
+  font-size:35px;
+}
+
+.badge-unlock-description,.level-up-text{
+  color:#ccc;
+  font-size:16px;
+  max-width:330px;
+  margin:auto;
+}
+
+.lightning{font-size:80px}
+
+.level-up-number{
+  font-family:"Bangers",cursive;
+  font-size:75px;
+  color:var(--green);
+  text-shadow:3px 3px #000,0 0 25px var(--green);
+}
+
+@media(max-width:500px){
+  h1{font-size:43px}
+  .counter-box{font-size:14px}
+  .values{flex-direction:column;gap:0}
+  .menu-buttons{grid-template-columns:1fr 1fr}
+  .badges-grid,.stats-grid,.theme-grid{grid-template-columns:1fr 1fr}
+}
+</style></head><body><div id="celebration"></div><div id="badgeUnlock">
+  <div class="badge-unlock-box">
+    <div id="badgeUnlockIcon" class="badge-unlock-icon">🏆</div>
+    <div class="badge-unlock-title">SUCCÈS DÉBLOQUÉ !</div>
+    <div id="badgeUnlockName" class="badge-unlock-name">Premier pas</div>
+    <div id="badgeUnlockDescription" class="badge-unlock-description"></div>
+  </div>
+</div><div id="levelUp">
+  <div class="level-up-box">
+    <div class="lightning">⚡</div>
+    <div class="level-up-title">NIVEAU SUPÉRIEUR !</div>
+    <div id="levelUpNumber" class="level-up-number">NIVEAU 2</div>
+    <div id="levelUpText" class="level-up-text"></div>
+  </div>
+</div><div class="container"><div id="pageListe"><h1>Mes Quêtes</h1>
+<div class="subtitle">Mes quêtes principales et secondaires</div>
+<div id="quote" class="quote"></div><div class="level-card">
+  <div class="level-line">
+    <span class="level-name">NIVEAU GLOBAL</span>
+    <span class="level-number">Niveau <span id="niveau">1</span></span>
+  </div>
+  <div class="xp-text">
+    <span id="xpActuel">0</span>/<span id="xpNecessaire">100</span> XP
+  </div>
+  <div class="level-bar"><div id="levelFill"></div></div>
+</div><div class="counter">
+  <div id="mainChoice" class="counter-box main-counter selected">
+    PRINCIPALES : <span id="principales">0</span>
+  </div>
+  <div id="secondaryChoice" class="counter-box secondary-counter">
+    <span id="secondaires">0</span> : SECONDAIRES
+  </div>
+</div><div class="counter">
+  <div class="counter-box remaining">
+    RESTANTES : <span id="restantes">0</span>
+  </div>
+  <div class="counter-box completed">
+    🔥 <span id="terminees">0</span> : TERMINÉES
+  </div>
+</div><div class="add-box">
+  <input id="input" type="text" placeholder="Nom de ta quête..." autocomplete="off">
+  <button id="addBtn" class="add-btn" type="button">+ Ajouter</button>
+</div><div class="search-box">
+  <input id="search" type="text" placeholder="🔎 Rechercher une quête..." autocomplete="off">
+</div><div class="menu-buttons">
+  <button class="menu-btn" type="button" data-page="stats">📊 Stats</button>
+  <button class="menu-btn" type="button" data-page="badges">🏆 Succès</button>
+  <button class="menu-btn" type="button" data-page="historique">📜 Historique</button>
+  <button class="menu-btn" type="button" data-page="themes">🎨 Thèmes</button>
+</div><div id="activeTitle" class="section-title active">
+  QUÊTES EN COURS<div class="section-line"></div>
+</div>
+<ul id="listeActive"></ul><div id="finishedTitle" class="section-title finished">
+  🔥 QUÊTES TERMINÉES<div class="section-line"></div>
+</div>
+<ul id="listeFinished"></ul><button id="clearBtn" class="clear" type="button">Tout supprimer</button>
+<button id="undoDelete" class="undo-delete" type="button">↩️ Annuler la suppression</button>
+<button id="resetBtn" class="reset" type="button">⚠️ Réinitialiser complètement</button>
+<button id="undoReset" class="undo-reset" type="button">↩️ Annuler la réinitialisation</button>
+
+</div><div id="pageDetail">
+<button class="back-btn" id="backDetail">← Retour aux quêtes</button><div class="detail-card">
+<h2 id="detailTitre" class="detail-title"></h2><div class="field">
+<label>Objectif</label>
+<input id="objectif" type="text" placeholder="Quel est ton objectif ?">
+</div><div class="field">
+<label>Description</label>
+<textarea id="description" placeholder="- Première étape&#10;- Deuxième étape"></textarea>
+</div><div id="subtasksContainer" class="subtasks"></div><div class="field">
+<label>Difficulté</label>
+<select id="difficulty">
+<option value="facile">🟢 Facile — XP faible</option>
+<option value="moyenne">🟠 Moyenne — XP normale</option>
+<option value="difficile">🔴 Difficile — XP élevée</option>
+</select>
+</div><div class="field">
+<label>Récompense</label>
+<div id="xpReward">+25 XP</div>
+</div><div class="values">
+<div class="field">
+<label>Actuel</label>
+<input id="valeurActuelle" type="number" placeholder="Ex : 20">
+</div>
+<div class="field">
+<label>Souhaité</label>
+<input id="valeurSouhaitee" type="number" placeholder="Ex : 100">
+</div>
+</div><div class="detail-progress">
+<div class="detail-progress-bar">
+<div id="detailProgressFill"></div>
+<div id="detailProgressText">0 %</div>
+</div>
+</div><div id="detailDate" class="finished-date" style="display:none"></div>
+</div>
+</div><div id="pageStats">
+<button class="back-btn back-page">← Retour</button>
+<div class="page-card">
+<h2 class="page-title">📊 Mes statistiques</h2>
+<div class="stats-grid">
+<div class="stat"><span id="statTotal" class="stat-number">0</span><span class="stat-label">Quêtes créées</span></div>
+<div class="stat stat-green"><span id="statTerminees" class="stat-number">0</span><span class="stat-label">Quêtes terminées</span></div>
+<div class="stat stat-main"><span id="statPrincipales" class="stat-number">0</span><span class="stat-label">Principales</span></div>
+<div class="stat stat-secondary"><span id="statSecondaires" class="stat-number">0</span><span class="stat-label">Secondaires</span></div>
+<div class="stat stat-favorite"><span id="statFavorisTermines" class="stat-number">0</span><span class="stat-label">⭐ Favoris terminés</span></div>
+<div class="stat"><span id="statXP" class="stat-number">0</span><span class="stat-label">XP gagnée</span></div>
+<div class="stat"><span id="statNiveau" class="stat-number">1</span><span class="stat-label">Niveau</span></div>
+<div class="stat"><span id="statFaciles" class="stat-number">0</span><span class="stat-label">Faciles terminées</span></div>
+<div class="stat"><span id="statMoyennes" class="stat-number">0</span><span class="stat-label">Moyennes terminées</span></div>
+<div class="stat"><span id="statDifficiles" class="stat-number">0</span><span class="stat-label">Difficiles terminées</span></div>
+</div>
+</div>
+</div><div id="pageBadges">
+<button class="back-btn back-page">← Retour</button>
+<div class="page-card">
+<h2 class="page-title">🏆 Succès & Badges</h2>
+<div id="badgesGrid" class="badges-grid"></div>
+</div>
+</div><div id="pageHistorique">
+<button class="back-btn back-page">← Retour</button>
+<div class="page-card">
+<h2 class="page-title">📜 Historique</h2>
+<div id="historyList"></div>
+</div>
+</div><div id="pageThemes">
+<button class="back-btn back-page">← Retour</button>
+<div class="page-card">
+<h2 class="page-title">🎨 Choisir mon thème</h2>
+<div id="themeGrid" class="theme-grid"></div>
+</div>
+</div></div><script>
+"use strict";
+
+/* =====================================================
+   CHARGEMENT ROBUSTE DES DONNÉES
+===================================================== */
+
+function chargerJSON(cle,valeurParDefaut){
+  try{
+    const brut=localStorage.getItem(cle);
+
+    if(!brut)return valeurParDefaut;
+
+    const donnees=JSON.parse(brut);
+
+    return donnees;
+  }catch(erreur){
+    console.warn("Donnée localStorage ignorée :",cle,erreur);
+    return valeurParDefaut;
+  }
+}
+
+let liste=chargerJSON("maListe",[]);
+if(!Array.isArray(liste))liste=[];
+
+let badgesVus=chargerJSON("badgesVus",[]);
+if(!Array.isArray(badgesVus))badgesVus=[];
+
+let niveauxVus=chargerJSON("niveauxVus",[]);
+if(!Array.isArray(niveauxVus))niveauxVus=[];
+
+let typeSelectionne="principale";
+let elementOuvert=null;
+
+/*
+  Nouvelle structure d'annulation.
+
+  sauvegardeSuppression contient maintenant :
+  - type : "une" ou "toutes"
+  - index : position d'origine pour une quête
+  - quete : quête supprimée
+  - liste : ancienne liste complète pour "Tout supprimer"
+
+  Cela évite qu'une fonction d'annulation écrase
+  une autre fonction d'annulation.
+*/
+let sauvegardeSuppression=null;
+
+let sauvegardeReinitialisation=null;
+
+function normaliserQuete(tache){
+  if(!tache || typeof tache!=="object")return null;
+
+  if(typeof tache.nom!=="string")
+    tache.nom="Quête";
+
+  if(tache.type!=="principale" && tache.type!=="secondaire")
+    tache.type="principale";
+
+  tache.terminee=Boolean(tache.terminee);
+  tache.favorite=Boolean(tache.favorite);
+  tache.enCours=Boolean(tache.enCours);
+
+  if(!Array.isArray(tache.sousTaches))
+    tache.sousTaches=[];
+
+  if(!tache.difficulte)
+    tache.difficulte="facile";
+
+  if(tache.dateTerminee===undefined)
+    tache.dateTerminee=null;
+
+  if(tache.objectif===undefined)
+    tache.objectif="";
+
+  if(tache.description===undefined)
+    tache.description="- ";
+
+  if(tache.valeurActuelle===undefined)
+    tache.valeurActuelle="";
+
+  if(tache.valeurSouhaitee===undefined)
+    tache.valeurSouhaitee="";
+
+  return tache;
+}
+
+liste=liste.map(normaliserQuete).filter(Boolean);
+
+function sauvegarder(){
+  try{
+    localStorage.setItem("maListe",JSON.stringify(liste));
+    localStorage.setItem("badgesVus",JSON.stringify(badgesVus));
+    localStorage.setItem("niveauxVus",JSON.stringify(niveauxVus));
+  }catch(erreur){
+    console.error("Impossible de sauvegarder :",erreur);
+  }
+}
+
+/* =====================================================
+   UTILITAIRES
+===================================================== */
+
+function echapper(texte){
+  return String(texte)
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;")
+    .replace(/'/g,"&#039;");
+}
+
+function obtenirRecompenseXP(type,difficulte){
+  if(type==="principale"){
+    if(difficulte==="difficile")return 100;
+    if(difficulte==="moyenne")return 50;
+    return 25;
+  }
+
+  if(difficulte==="difficile")return 50;
+  if(difficulte==="moyenne")return 25;
+  return 10;
+}
+
+function obtenirXP(){
+  return liste.reduce((total,tache)=>{
+    if(!tache.terminee)return total;
+
+    return total+obtenirRecompenseXP(
+      tache.type,
+      tache.difficulte
+    );
+  },0);
+}
+
+function xpPourNiveau(niveau){
+  return 100+((niveau-1)*50);
+}
+
+function calculerNiveau(){
+  const total=obtenirXP();
+
+  let niveau=1;
+  let restant=total;
+
+  while(restant>=xpPourNiveau(niveau)){
+    restant-=xpPourNiveau(niveau);
+    niveau++;
+  }
+
+  return{
+    niveau,
+    actuel:restant,
+    necessaire:xpPourNiveau(niveau)
+  };
+}
+
+function afficherNiveau(){
+  const infos=calculerNiveau();
+
+  const pourcentage=Math.max(
+    0,
+    Math.min(
+      100,
+      (infos.actuel/infos.necessaire)*100
+    )
+  );
+
+  document.getElementById("niveau").textContent=infos.niveau;
+  document.getElementById("xpActuel").textContent=infos.actuel;
+  document.getElementById("xpNecessaire").textContent=infos.necessaire;
+  document.getElementById("levelFill").style.width=pourcentage+"%";
+}
+
+/* =====================================================
+   TYPE
+===================================================== */
+
+function choisirType(type){
+  typeSelectionne=type;
+
+  document.getElementById("mainChoice")
+    .classList.toggle(
+      "selected",
+      type==="principale"
+    );
+
+  document.getElementById("secondaryChoice")
+    .classList.toggle(
+      "selected",
+      type==="secondaire"
+    );
+}
+
+/* =====================================================
+   AJOUT
+===================================================== */
+
+function ajouter(){
+  const input=document.getElementById("input");
+
+  if(!input)return;
+
+  const nom=input.value.trim();
+
+  if(!nom){
+    input.focus();
+    return;
+  }
+
+  const nouvelleQuete=normaliserQuete({
+    id:
+      Date.now()+"-"+
+      Math.random().toString(36).slice(2),
+
+    nom:nom,
+    type:typeSelectionne,
+    terminee:false,
+    dateTerminee:null,
+    objectif:"",
+    description:"- ",
+    valeurActuelle:"",
+    valeurSouhaitee:"",
+    difficulte:"facile",
+    sousTaches:[],
+    enCours:false,
+    favorite:false
+  });
+
+  liste.push(nouvelleQuete);
+
+  input.value="";
+
+  sauvegarder();
+  afficher();
+
+  input.focus();
+
+  ouvrirDetail(liste.length-1);
+}
+
+/* =====================================================
+   PROGRESSION
+===================================================== */
+
+function calculerProgression(tache){
+  let objectif=0;
+
+  const actuel=parseFloat(tache.valeurActuelle);
+  const souhaite=parseFloat(tache.valeurSouhaitee);
+
+  if(
+    !isNaN(actuel) &&
+    !isNaN(souhaite) &&
+    souhaite>0
+  ){
+    objectif=Math.max(
+      0,
+      Math.min(1,actuel/souhaite)
+    );
+  }
+
+  const sousTaches=Array.isArray(tache.sousTaches)
+    ?tache.sousTaches
+    :[];
+
+  let etapes=0;
+
+  if(sousTaches.length>0){
+    etapes=
+      sousTaches.filter(
+        s=>s.terminee
+      ).length/
+      sousTaches.length;
+  }
+
+  const resultat=
+    sousTaches.length===0
+      ?objectif*100
+      :(objectif*50)+(etapes*50);
+
+  return Math.round(
+    Math.max(
+      0,
+      Math.min(100,resultat)
+    )
+  );
+}
+
+function couleurProgression(p){
+  if(p>=100)return "#20F060";
+  if(p>=75)return "#00BFFF";
+  if(p>=50)return "#FF8A00";
+  if(p>=25)return "#FF5F91";
+
+  return "var(--primary)";
+}
+
+function classeProgression(p){
+  if(p>=100)return "progress-100";
+  if(p>=75)return "progress-75";
+  if(p>=50)return "progress-50";
+  if(p>=25)return "progress-25";
+
+  return "progress-0";
+}
+
+/* =====================================================
+   AFFICHAGE
+===================================================== */
+
+function afficher(){
+  const active=document.getElementById("listeActive");
+  const finished=document.getElementById("listeFinished");
+
+  active.innerHTML="";
+  finished.innerHTML="";
+
+  const recherche=document
+    .getElementById("search")
+    .value
+    .toLowerCase()
+    .trim();
+
+  const visibles=liste
+    .filter(
+      tache=>
+        tache.nom
+          .toLowerCase()
+          .includes(recherche)
+    )
+    .slice()
+    .sort((a,b)=>{
+      if(a.favorite&&!b.favorite)return -1;
+      if(!a.favorite&&b.favorite)return 1;
+
+      return 0;
+    });
+
+  const terminees=
+    liste.filter(t=>t.terminee).length;
+
+  const restantes=
+    liste.length-terminees;
+
+  const principales=
+    liste.filter(
+      t=>t.type==="principale"&&!t.terminee
+    ).length;
+
+  const secondaires=
+    liste.filter(
+      t=>t.type==="secondaire"&&!t.terminee
+    ).length;
+
+  document.getElementById("principales")
+    .textContent=principales;
+
+  document.getElementById("secondaires")
+    .textContent=secondaires;
+
+  document.getElementById("restantes")
+    .textContent=restantes;
+
+  document.getElementById("terminees")
+    .textContent=terminees;
+
+  afficherNiveau();
+
+  if(visibles.length===0){
+    active.innerHTML=
+      '<div class="empty">Aucune quête trouvée...</div>';
+  }
+
+  visibles.forEach(tache=>{
+    const index=liste.indexOf(tache);
+    const li=creerQuete(tache,index);
+
+    if(tache.terminee){
+      finished.appendChild(li);
+    }else{
+      active.appendChild(li);
+    }
+  });
+
+  document.getElementById("activeTitle").style.display=
+    liste.some(t=>!t.terminee)
+      ?"flex"
+      :"none";
+
+  document.getElementById("finishedTitle").style.display=
+    liste.some(t=>t.terminee)
+      ?"flex"
+      :"none";
+
+  mettreAJourBoutonsAnnulation();
+}
+
+function afficherDifficulte(tache){
+  const difficulte=
+    tache.difficulte||"facile";
+
+  let classe="easy";
+  let texte="FACILE";
+
+  if(difficulte==="moyenne"){
+    classe="medium";
+    texte="MOYENNE";
+  }
+
+  if(difficulte==="difficile"){
+    classe="hard";
+    texte="DIFFICILE";
+  }
+
+  return `
+    <span class="difficulty ${classe}">
+      ${texte}
+    </span>
+  `;
+}
+
+function creerQuete(tache,index){
+  const li=document.createElement("li");
+
+  li.classList.add(
+    tache.type==="principale"
+      ?"main-quest"
+      :"secondary-quest"
+  );
+
+  if(tache.terminee)
+    li.classList.add("done");
+
+  if(tache.enCours&&!tache.terminee)
+    li.classList.add("current-quest");
+
+  if(tache.favorite)
+    li.classList.add("favorite-quest");
+
+  const progression=
+    calculerProgression(tache);
+
+  li.style.setProperty(
+    "--progress",
+    progression+"%"
+  );
+
+  li.style.setProperty(
+    "--progress-color",
+    couleurProgression(progression)
+  );
+
+  if(progression>=100)
+    li.classList.add("progress-complete");
+
+  const label=
+    tache.type==="principale"
+      ?'<span class="quest-label main-label">PRINCIPALE</span>'
+      :'<span class="quest-label secondary-label">SECONDAIRE</span>';
+
+  const current=
+    tache.enCours&&!tache.terminee
+      ?'<span class="quest-label current-label">🎯 EN COURS</span>'
+      :"";
+
+  const date=
+    tache.terminee&&tache.dateTerminee
+      ?`
+        <div class="finished-date">
+          🔥 Terminée le ${echapper(tache.dateTerminee)}
+        </div>
+      `
+      :"";
+
+  const xp=
+    obtenirRecompenseXP(
+      tache.type,
+      tache.difficulte
+    );
+
+  li.innerHTML=`
+    <div class="quest-top">
+
+      <input
+        class="checkbox"
+        type="checkbox"
+        ${tache.terminee?"checked":""}
+      >
+
+      <div class="quest-content">
+
+        <div class="quest-name">
+          ${echapper(tache.nom)}
+        </div>
+
+        ${label}
+        ${current}
+
+        ${afficherDifficulte(tache)}
+
+        <div class="quest-xp">
+          +${xp} XP
+        </div>
+
+        ${date}
+
+      </div>
+
+      <button
+        class="favorite-btn ${tache.favorite?"active":""}"
+        type="button"
+      >
+        ${tache.favorite?"★":"☆"}
+      </button>
+
+      <button
+        class="delete"
+        type="button"
+      >
+        ✕
+      </button>
+
+    </div>
+
+    <div class="order-buttons">
+      <button
+        class="order-btn up"
+        type="button"
+      >
+        ↑ Monter
+      </button>
+
+      <button
+        class="order-btn down"
+        type="button"
+      >
+        ↓ Descendre
+      </button>
+    </div>
+  `;
+
+  li.querySelector(".favorite-btn")
+    .addEventListener("click",event=>{
+      event.stopPropagation();
+      basculerFavori(index);
+    });
+
+  li.querySelector(".checkbox")
+    .addEventListener("click",event=>{
+      event.stopPropagation();
+
+      validerManuellement(
+        index,
+        event.target.checked
+      );
+    });
+
+  li.querySelector(".delete")
+    .addEventListener("click",event=>{
+      event.stopPropagation();
+      supprimerQuete(index);
+    });
+
+  li.querySelector(".up")
+    .addEventListener("click",event=>{
+      event.stopPropagation();
+      deplacerQuete(index,-1);
+    });
+
+  li.querySelector(".down")
+    .addEventListener("click",event=>{
+      event.stopPropagation();
+      deplacerQuete(index,1);
+    });
+
+  li.querySelector(".quest-content")
+    .addEventListener("click",()=>{
+      ouvrirDetail(index);
+    });
+
+  return li;
+}
+
+/* =====================================================
+   FAVORIS
+===================================================== */
+
+function basculerFavori(index){
+  if(!liste[index])return;
+
+  liste[index].favorite=
+    !liste[index].favorite;
+
+  sauvegarder();
+  afficher();
+}
+
+/* =====================================================
+   VALIDATION
+===================================================== */
+
+function validerManuellement(index,coche){
+  const tache=liste[index];
+
+  if(!tache)return;
+
+  if(coche&&!tache.terminee){
+    validerQuete(index);
+    return;
+  }
+
+  if(!coche&&tache.terminee){
+    tache.terminee=false;
+    tache.dateTerminee=null;
+
+    sauvegarder();
+    afficher();
+  }
+}
+
+function validerQuete(index){
+  const tache=liste[index];
+
+  if(!tache||tache.terminee)return;
+
+  const ancienNiveau=
+    calculerNiveau().niveau;
+
+  tache.terminee=true;
+  tache.dateTerminee=
+    new Date().toLocaleDateString("fr-FR");
+  tache.enCours=false;
+
+  sauvegarder();
+
+  const nouveauNiveau=
+    calculerNiveau().niveau;
+
+  lancerCelebration();
+
+  if(
+    nouveauNiveau>ancienNiveau &&
+    !niveauxVus.includes(nouveauNiveau)
+  ){
+    niveauxVus.push(nouveauNiveau);
+    sauvegarder();
+
+    setTimeout(()=>{
+      lancerAnimationNiveau(
+        nouveauNiveau
+      );
+    },650);
+  }
+
+  setTimeout(
+    verifierNouveauxBadges,
+    nouveauNiveau>ancienNiveau
+      ?2100
+      :650
+  );
+
+  afficher();
+}
+
+/* =====================================================
+   SUPPRESSION D'UNE QUÊTE
+   CORRECTION PRINCIPALE
+===================================================== */
+
+function supprimerQuete(index){
+  if(!liste[index])return;
+
+  /*
+    On mémorise :
+    - la quête exacte
+    - sa position exacte
+
+    Ainsi "Annuler la suppression" pourra
+    remettre la quête au même endroit.
+  */
+  sauvegardeSuppression={
+    type:"une",
+    index:index,
+    quete:JSON.parse(
+      JSON.stringify(liste[index])
+    )
+  };
+
+  /*
+    Si une réinitialisation annulable existait,
+    on ne la touche pas.
+
+    L'annulation de suppression reste indépendante.
+  */
+
+  liste.splice(index,1);
+
+  /*
+    Si le détail affiché concernait cette quête,
+    on ferme proprement le détail.
+  */
+  if(elementOuvert===index){
+    elementOuvert=null;
+
+    cacherToutesLesPages();
+
+    document.getElementById("pageListe")
+      .style.display="block";
+  }else if(
+    elementOuvert!==null &&
+    elementOuvert>index
+  ){
+    /*
+      Toutes les quêtes situées après celle
+      supprimée ont changé d'index.
+    */
+    elementOuvert--;
+  }
+
+  sauvegarder();
+  afficher();
+}
+
+/* =====================================================
+   TOUT SUPPRIMER
+===================================================== */
+
+function toutSupprimer(){
+  if(liste.length===0)return;
+
+  if(!confirm("Supprimer toutes les quêtes ?"))
+    return;
+
+  /*
+    On utilise la même sauvegarde d'annulation,
+    mais avec un type différent.
+
+    Il n'y a donc plus deux fonctions
+    annulerSuppression() qui se remplacent.
+  */
+  sauvegardeSuppression={
+    type:"toutes",
+    liste:JSON.parse(
+      JSON.stringify(liste)
+    )
+  };
+
+  liste=[];
+
+  elementOuvert=null;
+
+  sauvegarder();
+  afficher();
+
+  cacherToutesLesPages();
+
+  document.getElementById("pageListe")
+    .style.display="block";
+}
+
+/* =====================================================
+   ANNULER LA SUPPRESSION
+   CORRECTION PRINCIPALE
+===================================================== */
+
+function annulerSuppression(){
+  if(!sauvegardeSuppression)return;
+
+  if(sauvegardeSuppression.type==="une"){
+
+    const index=Math.max(
+      0,
+      Math.min(
+        sauvegardeSuppression.index,
+        liste.length
+      )
+    );
+
+    /*
+      On réinsère la quête à son emplacement
+      d'origine au lieu de faire simplement push().
+    */
+    liste.splice(
+      index,
+      0,
+      JSON.parse(
+        JSON.stringify(
+          sauvegardeSuppression.quete
+        )
+      )
+    );
+
+  }else if(
+    sauvegardeSuppression.type==="toutes"
+  ){
+
+    /*
+      Pour "Tout supprimer", on restaure
+      exactement toute la liste originale.
+    */
+    liste=JSON.parse(
+      JSON.stringify(
+        sauvegardeSuppression.liste
+      )
+    );
+  }
+
+  sauvegardeSuppression=null;
+
+  sauvegarder();
+  afficher();
+}
+
+/* =====================================================
+   ORDRE
+===================================================== */
+
+function deplacerQuete(index,direction){
+  const nouveau=index+direction;
+
+  if(
+    nouveau<0 ||
+    nouveau>=liste.length
+  ){
+    return;
+  }
+
+  [
+    liste[index],
+    liste[nouveau]
+  ]=[
+    liste[nouveau],
+    liste[index]
+  ];
+
+  /*
+    L'élément actuellement ouvert doit également
+    suivre son déplacement.
+  */
+  if(elementOuvert===index){
+    elementOuvert=nouveau;
+  }else if(elementOuvert===nouveau){
+    elementOuvert=index;
+  }
+
+  sauvegarder();
+  afficher();
+}
+
+/* =====================================================
+   DETAIL
+===================================================== */
+
+function ouvrirDetail(index){
+  if(!liste[index])return;
+
+  elementOuvert=index;
+
+  cacherToutesLesPages();
+
+  document.getElementById("pageDetail")
+    .style.display="block";
+
+  const tache=liste[index];
+
+  document.getElementById("detailTitre")
+    .textContent=tache.nom;
+
+  document.getElementById("objectif")
+    .value=tache.objectif||"";
+
+  document.getElementById("description")
+    .value=tache.description||"- ";
+
+  document.getElementById("valeurActuelle")
+    .value=tache.valeurActuelle??"";
+
+  document.getElementById("valeurSouhaitee")
+    .value=tache.valeurSouhaitee??"";
+
+  document.getElementById("difficulty")
+    .value=tache.difficulte||"facile";
+
+  if(!Array.isArray(tache.sousTaches)){
+    tache.sousTaches=
+      extraireSousTaches(
+        tache.description||""
+      );
+  }
+
+  afficherSousTaches();
+  afficherRecompense();
+  afficherProgressionDetailSansValidation();
+  afficherDateDetail();
+}
+
+function afficherDateDetail(){
+  const element=
+    document.getElementById("detailDate");
+
+  if(
+    elementOuvert!==null &&
+    liste[elementOuvert] &&
+    liste[elementOuvert].terminee &&
+    liste[elementOuvert].dateTerminee
+  ){
+    element.style.display="block";
+
+    element.textContent=
+      "🔥 Terminée le "+
+      liste[elementOuvert].dateTerminee;
+
+  }else{
+    element.style.display="none";
+  }
+}
+
+/* =====================================================
+   SOUS-TÂCHES
+===================================================== */
+
+function extraireSousTaches(description){
+  return description
+    .split("\n")
+    .filter(
+      ligne=>
+        ligne.trim().startsWith("-")
+    )
+    .map(ligne=>({
+      texte:
+        ligne
+          .trim()
+          .substring(1)
+          .trim(),
+
+      terminee:false
+    }))
+    .filter(
+      s=>s.texte!==""
+    );
+}
+
+function afficherSousTaches(){
+  const container=
+    document.getElementById(
+      "subtasksContainer"
+    );
+
+  container.innerHTML="";
+
+  if(elementOuvert===null)return;
+
+  const sousTaches=
+    liste[elementOuvert].sousTaches||[];
+
+  if(sousTaches.length===0){
+    container.innerHTML=
+      '<div class="no-subtasks">Aucune sous-tâche.</div>';
+
+    return;
+  }
+
+  const titre=
+    document.createElement("div");
+
+  titre.className="subtasks-title";
+  titre.textContent="ÉTAPES DE LA QUÊTE";
+
+  container.appendChild(titre);
+
+  sousTaches.forEach(
+    (sousTache,index)=>{
+      const ligne=
+        document.createElement("div");
+
+      ligne.className="subtask";
+
+      if(sousTache.terminee)
+        ligne.classList.add("completed");
+
+      ligne.innerHTML=`
+        <input
+          class="subtask-checkbox"
+          type="checkbox"
+          ${sousTache.terminee?"checked":""}
+        >
+
+        <span class="subtask-text">
+          ${echapper(sousTache.texte)}
+        </span>
+      `;
+
+      ligne
+        .querySelector(
+          ".subtask-checkbox"
+        )
+        .addEventListener(
+          "change",
+          event=>{
+            if(
+              elementOuvert===null ||
+              !liste[elementOuvert]
+            ){
+              return;
+            }
+
+            liste[elementOuvert]
+              .sousTaches[index]
+              .terminee=
+                event.target.checked;
+
+            ligne.classList.toggle(
+              "completed",
+              event.target.checked
+            );
+
+            sauvegarder();
+
+            afficherProgressionDetailSansValidation();
+          }
+        );
+
+      container.appendChild(ligne);
+    }
+  );
+}
+
+function actualiserSousTaches(){
+  if(
+    elementOuvert===null ||
+    !liste[elementOuvert]
+  ){
+    return;
+  }
+
+  const description=
+    document.getElementById(
+      "description"
+    ).value;
+
+  const anciennes=
+    liste[elementOuvert].sousTaches||[];
+
+  const nouvelles=
+    description
+      .split("\n")
+      .filter(
+        ligne=>
+          ligne.trim().startsWith("-")
+      )
+      .map(ligne=>{
+        const texte=
+          ligne
+            .trim()
+            .substring(1)
+            .trim();
+
+        const ancienne=
+          anciennes.find(
+            s=>s.texte===texte
+          );
+
+        return{
+          texte,
+          terminee:
+            ancienne
+              ?ancienne.terminee
+              :false
+        };
+      })
+      .filter(
+        s=>s.texte!==""
+      );
+
+  liste[elementOuvert]
+    .sousTaches=nouvelles;
+}
+
+/* =====================================================
+   PROGRESSION DETAIL
+===================================================== */
+
+function afficherProgressionDetailSansValidation(){
+  if(
+    elementOuvert===null ||
+    !liste[elementOuvert]
+  ){
+    return;
+  }
+
+  const tache=
+    liste[elementOuvert];
+
+  tache.valeurActuelle=
+    document.getElementById(
+      "valeurActuelle"
+    ).value;
+
+  tache.valeurSouhaitee=
+    document.getElementById(
+      "valeurSouhaitee"
+    ).value;
+
+  const progression=
+    calculerProgression(tache);
+
+  const fill=
+    document.getElementById(
+      "detailProgressFill"
+    );
+
+  const text=
+    document.getElementById(
+      "detailProgressText"
+    );
+
+  fill.className=
+    classeProgression(progression);
+
+  fill.style.width=
+    progression+"%";
+
+  text.textContent=
+    progression+" %";
+
+  afficherRecompense();
+  afficherDateDetail();
+
+  sauvegarder();
+}
+
+function afficherRecompense(){
+  if(
+    elementOuvert===null ||
+    !liste[elementOuvert]
+  ){
+    return;
+  }
+
+  const tache=
+    liste[elementOuvert];
+
+  document.getElementById(
+    "xpReward"
+  ).textContent=
+    "+"+
+    obtenirRecompenseXP(
+      tache.type,
+      tache.difficulte
+    )+
+    " XP";
+}
+
+function sauvegardeAutomatique(){
+  if(
+    elementOuvert===null ||
+    !liste[elementOuvert]
+  ){
+    return;
+  }
+
+  const tache=
+    liste[elementOuvert];
+
+  tache.objectif=
+    document.getElementById(
+      "objectif"
+    ).value;
+
+  tache.description=
+    document.getElementById(
+      "description"
+    ).value;
+
+  tache.valeurActuelle=
+    document.getElementById(
+      "valeurActuelle"
+    ).value;
+
+  tache.valeurSouhaitee=
+    document.getElementById(
+      "valeurSouhaitee"
+    ).value;
+
+  tache.difficulte=
+    document.getElementById(
+      "difficulty"
+    ).value;
+
+  actualiserSousTaches();
+  sauvegarder();
+}
+
+/* =====================================================
+   PAGES
+===================================================== */
+
+function cacherToutesLesPages(){
+  [
+    "pageListe",
+    "pageDetail",
+    "pageStats",
+    "pageBadges",
+    "pageHistorique",
+    "pageThemes"
+  ].forEach(id=>{
+    document.getElementById(id)
+      .style.display="none";
+  });
+}
+
+function ouvrirPage(page){
+  cacherToutesLesPages();
+
+  if(page==="stats"){
+    afficherStats();
+
+    document.getElementById(
+      "pageStats"
+    ).style.display="block";
+  }
+
+  if(page==="badges"){
+    afficherBadges();
+
+    document.getElementById(
+      "pageBadges"
+    ).style.display="block";
+  }
+
+  if(page==="historique"){
+    afficherHistorique();
+
+    document.getElementById(
+      "pageHistorique"
+    ).style.display="block";
+  }
+
+  if(page==="themes"){
+    afficherThemes();
+
+    document.getElementById(
+      "pageThemes"
+    ).style.display="block";
+  }
+}
+
+function retourListe(){
+  sauvegardeAutomatique();
+
+  elementOuvert=null;
+
+  cacherToutesLesPages();
+
+  document.getElementById(
+    "pageListe"
+  ).style.display="block";
+
+  afficher();
+}
+
+function retourListeDepuisPage(){
+  cacherToutesLesPages();
+
+  document.getElementById(
+    "pageListe"
+  ).style.display="block";
+
+  afficher();
+}
+
+/* =====================================================
+   STATS
+===================================================== */
+
+function afficherStats(){
+  const terminees=
+    liste.filter(t=>t.terminee);
+
+  document.getElementById(
+    "statTotal"
+  ).textContent=liste.length;
+
+  document.getElementById(
+    "statTerminees"
+  ).textContent=terminees.length;
+
+  document.getElementById(
+    "statPrincipales"
+  ).textContent=
+    liste.filter(
+      t=>t.type==="principale"
+    ).length;
+
+  document.getElementById(
+    "statSecondaires"
+  ).textContent=
+    liste.filter(
+      t=>t.type==="secondaire"
+    ).length;
+
+  document.getElementById(
+    "statFavorisTermines"
+  ).textContent=
+    liste.filter(
+      t=>t.favorite&&t.terminee
+    ).length;
+
+  document.getElementById(
+    "statXP"
+  ).textContent=obtenirXP();
+
+  document.getElementById(
+    "statNiveau"
+  ).textContent=
+    calculerNiveau().niveau;
+
+  document.getElementById(
+    "statFaciles"
+  ).textContent=
+    terminees.filter(
+      t=>t.difficulte==="facile"
+    ).length;
+
+  document.getElementById(
+    "statMoyennes"
+  ).textContent=
+    terminees.filter(
+      t=>t.difficulte==="moyenne"
+    ).length;
+
+  document.getElementById(
+    "statDifficiles"
+  ).textContent=
+    terminees.filter(
+      t=>t.difficulte==="difficile"
+    ).length;
+}
+
+/* =====================================================
+   BADGES
+===================================================== */
+
+function obtenirBadges(){
+  const terminees=
+    liste.filter(t=>t.terminee);
+
+  const principales=
+    terminees.filter(
+      t=>t.type==="principale"
+    );
+
+  const difficiles=
+    terminees.filter(
+      t=>t.difficulte==="difficile"
+    );
+
+  const moyennes=
+    terminees.filter(
+      t=>t.difficulte==="moyenne"
+    );
+
+  const faciles=
+    terminees.filter(
+      t=>t.difficulte==="facile"
+    );
+
+  return[
+    {
+      id:"premier_pas",
+      icon:"🌱",
+      nom:"Premier pas",
+      description:"Terminer ta première quête.",
+      unlocked:terminees.length>=1
+    },
+    {
+      id:"aventurier",
+      icon:"⚔️",
+      nom:"Aventurier",
+      description:"Terminer 5 quêtes.",
+      unlocked:terminees.length>=5
+    },
+    {
+      id:"champion",
+      icon:"🏆",
+      nom:"Champion",
+      description:"Terminer 10 quêtes.",
+      unlocked:terminees.length>=10
+    },
+    {
+      id:"maitre_principal",
+      icon:"🔴",
+      nom:"Maître principal",
+      description:"Terminer 5 quêtes principales.",
+      unlocked:principales.length>=5
+    },
+    {
+      id:"defi_releve",
+      icon:"💎",
+      nom:"Défi relevé",
+      description:"Terminer une quête difficile.",
+      unlocked:difficiles.length>=1
+    },
+    {
+      id:"legende",
+      icon:"🔥",
+      nom:"Légende",
+      description:"Terminer 25 quêtes.",
+      unlocked:terminees.length>=25
+    },
+    {
+      id:"puissance",
+      icon:"⚡",
+      nom:"Puissance",
+      description:"Atteindre le niveau 5.",
+      unlocked:calculerNiveau().niveau>=5
+    },
+    {
+      id:"grand_aventurier",
+      icon:"👑",
+      nom:"Grand aventurier",
+      description:"Atteindre le niveau 10.",
+      unlocked:calculerNiveau().niveau>=10
+    },
+    {
+      id:"regulier",
+      icon:"🟢",
+      nom:"Régulier",
+      description:"Terminer 5 quêtes faciles.",
+      unlocked:faciles.length>=5
+    },
+    {
+      id:"perseverant",
+      icon:"🟠",
+      nom:"Persévérant",
+      description:"Terminer 5 quêtes moyennes.",
+      unlocked:moyennes.length>=5
+    },
+    {
+      id:"tueur_boss",
+      icon:"☠️",
+      nom:"Tueur de boss",
+      description:"Terminer 5 quêtes difficiles.",
+      unlocked:difficiles.length>=5
+    },
+    {
+      id:"centurion",
+      icon:"🌟",
+      nom:"Centurion",
+      description:"Gagner 1000 XP.",
+      unlocked:obtenirXP()>=1000
+    },
+    {
+      id:"ascension",
+      icon:"🚀",
+      nom:"Ascension",
+      description:"Atteindre le niveau 15.",
+      unlocked:calculerNiveau().niveau>=15
+    },
+    {
+      id:"force_majeure",
+      icon:"💥",
+      nom:"Force majeure",
+      description:"Terminer 50 quêtes.",
+      unlocked:terminees.length>=50
+    },
+    {
+      id:"specialiste",
+      icon:"🏹",
+      nom:"Spécialiste",
+      description:"Terminer 10 quêtes principales.",
+      unlocked:principales.length>=10
+    },
+    {
+      id:"mythique",
+      icon:"💫",
+      nom:"Mythique",
+      description:"Atteindre le niveau 20.",
+      unlocked:calculerNiveau().niveau>=20
+    }
+  ];
+}
+
+function afficherBadges(){
+  const grid=
+    document.getElementById(
+      "badgesGrid"
+    );
+
+  grid.innerHTML="";
+
+  obtenirBadges().forEach(badge=>{
+    const element=
+      document.createElement("div");
+
+    element.className=
+      "badge"+
+      (badge.unlocked?" unlocked":"");
+
+    element.innerHTML=`
+      <span class="badge-icon">
+        ${badge.icon}
+      </span>
+
+      <span class="badge-name">
+        ${badge.nom}
+      </span>
+
+      <span class="badge-description">
+        ${badge.description}
+      </span>
+    `;
+
+    grid.appendChild(element);
+  });
+}
+
+function verifierNouveauxBadges(){
+  const nouveau=
+    obtenirBadges().find(
+      badge=>
+        badge.unlocked &&
+        !badgesVus.includes(badge.id)
+    );
+
+  if(!nouveau)return;
+
+  badgesVus.push(nouveau.id);
+
+  sauvegarder();
+
+  lancerAnimationBadge(nouveau);
+}
+
+function lancerAnimationBadge(badge){
+  const overlay=
+    document.getElementById(
+      "badgeUnlock"
+    );
+
+  document.getElementById(
+    "badgeUnlockIcon"
+  ).textContent=badge.icon;
+
+  document.getElementById(
+    "badgeUnlockName"
+  ).textContent=badge.nom;
+
+  document.getElementById(
+    "badgeUnlockDescription"
+  ).textContent=badge.description;
+
+  overlay.style.display="flex";
+
+  setTimeout(()=>{
+    overlay.style.display="none";
+  },1900);
+}
+
+function lancerAnimationNiveau(niveau){
+  const overlay=
+    document.getElementById(
+      "levelUp"
+    );
+
+  document.getElementById(
+    "levelUpNumber"
+  ).textContent=
+    "NIVEAU "+niveau;
+
+  overlay.style.display="flex";
+
+  setTimeout(()=>{
+    overlay.style.display="none";
+  },1800);
+}
+
+/* =====================================================
+   HISTORIQUE
+===================================================== */
+
+function afficherHistorique(){
+  const container=
+    document.getElementById(
+      "historyList"
+    );
+
+  container.innerHTML="";
+
+  const historique=
+    liste
+      .filter(
+        t=>t.terminee&&t.dateTerminee
+      )
+      .slice()
+      .reverse();
+
+  if(historique.length===0){
+    container.innerHTML=
+      '<div class="empty">Ton historique est encore vide.</div>';
+
+    return;
+  }
+
+  historique.forEach(tache=>{
+    const element=
+      document.createElement("div");
+
+    const xp=
+      obtenirRecompenseXP(
+        tache.type,
+        tache.difficulte
+      );
+
+    element.className=
+      "history-item";
+
+    element.innerHTML=`
+      <div class="history-name">
+        🔥 ${echapper(tache.nom)}
+      </div>
+
+      <div class="history-date">
+        Terminée le ${echapper(tache.dateTerminee)}
+      </div>
+
+      <div class="history-xp">
+        +${xp} XP
+      </div>
+    `;
+
+    container.appendChild(element);
+  });
+}
+
+/* =====================================================
+   RESET
+===================================================== */
+
+function reinitialiserTout(){
+  if(
+    !confirm(
+      "⚠️ Réinitialiser complètement l'aventure ?\n\n"+
+      "Toutes les quêtes, XP, badges vus et niveaux vus seront remis à zéro."
+    )
+  ){
+    return;
+  }
+
+  sauvegardeReinitialisation={
+    liste:JSON.parse(
+      JSON.stringify(liste)
+    ),
+
+    badgesVus:[
+      ...badgesVus
+    ],
+
+    niveauxVus:[
+      ...niveauxVus
+    ]
+  };
+
+  liste=[];
+  badgesVus=[];
+  niveauxVus=[];
+
+  /*
+    Une réinitialisation est une opération différente
+    de la suppression.
+
+    On conserve donc séparément :
+    - sauvegardeSuppression
+    - sauvegardeReinitialisation
+  */
+
+  elementOuvert=null;
+
+  try{
+    localStorage.removeItem("maListe");
+    localStorage.removeItem("badgesVus");
+    localStorage.removeItem("niveauxVus");
+  }catch(e){}
+
+  cacherToutesLesPages();
+
+  document.getElementById(
+    "pageListe"
+  ).style.display="block";
+
+  afficher();
+
+  document.getElementById(
+    "undoReset"
+  ).style.display="block";
+}
+
+function annulerReinitialisation(){
+  if(!sauvegardeReinitialisation)
+    return;
+
+  liste=JSON.parse(
+    JSON.stringify(
+      sauvegardeReinitialisation.liste
+    )
+  );
+
+  badgesVus=[
+    ...sauvegardeReinitialisation.badgesVus
+  ];
+
+  niveauxVus=[
+    ...sauvegardeReinitialisation.niveauxVus
+  ];
+
+  sauvegardeReinitialisation=null;
+
+  sauvegarder();
+  afficher();
+
+  document.getElementById(
+    "undoReset"
+  ).style.display="none";
+}
+
+function mettreAJourBoutonsAnnulation(){
+  document.getElementById(
+    "undoDelete"
+  ).style.display=
+    sauvegardeSuppression
+      ?"block"
+      :"none";
+
+  document.getElementById(
+    "undoReset"
+  ).style.display=
+    sauvegardeReinitialisation
+      ?"block"
+      :"none";
+}
+
+/* =====================================================
+   THEMES
+===================================================== */
+
+const themes=[
+  {
+    id:"default",
+    nom:"Héros",
+    description:"Le thème classique de ton aventure.",
+    preview:"preview-default"
+  },
+  {
+    id:"cyber",
+    nom:"Cyber",
+    description:"Néons, technologie et énergie futuriste.",
+    preview:"preview-cyber"
+  },
+  {
+    id:"arcane",
+    nom:"Arcane",
+    description:"Une ambiance magique et mystérieuse.",
+    preview:"preview-arcane"
+  },
+  {
+    id:"forest",
+    nom:"Forêt",
+    description:"Nature, aventure et esprit d'exploration.",
+    preview:"preview-forest"
+  },
+  {
+    id:"demon",
+    nom:"Démon",
+    description:"Rouge, sombre et puissant.",
+    preview:"preview-demon"
+  },
+  {
+    id:"minimal",
+    nom:"Minimal",
+    description:"Une interface plus sobre et épurée.",
+    preview:"preview-minimal"
+  }
+];
+
+function appliquerTheme(theme){
+  document.body.classList.remove(
+    "theme-cyber",
+    "theme-arcane",
+    "theme-forest",
+    "theme-demon",
+    "theme-minimal"
+  );
+
+  if(theme!=="default"){
+    document.body.classList.add(
+      "theme-"+theme
+    );
+  }
+
+  try{
+    localStorage.setItem(
+      "themeQuetes",
+      theme
+    );
+  }catch(e){}
+
+  afficherThemes();
+}
+
+function chargerTheme(){
+  let theme="default";
+
+  try{
+    theme=
+      localStorage.getItem(
+        "themeQuetes"
+      )||"default";
+  }catch(e){}
+
+  if(
+    !themes.some(
+      t=>t.id===theme
+    )
+  ){
+    theme="default";
+  }
+
+  appliquerTheme(theme);
+}
+
+function afficherThemes(){
+  const grid=
+    document.getElementById(
+      "themeGrid"
+    );
+
+  grid.innerHTML="";
+
+  let actuel="default";
+
+  try{
+    actuel=
+      localStorage.getItem(
+        "themeQuetes"
+      )||"default";
+  }catch(e){}
+
+  themes.forEach(theme=>{
+    const bouton=
+      document.createElement("button");
+
+    bouton.type="button";
+
+    bouton.className=
+      "theme-btn"+
+      (theme.id===actuel
+        ?" active"
+        :"");
+
+    bouton.innerHTML=`
+      <div class="theme-preview ${theme.preview}"></div>
+      <div class="theme-name">${theme.nom}</div>
+      <div class="theme-description">${theme.description}</div>
+    `;
+
+    bouton.addEventListener(
+      "click",
+      ()=>{
+        appliquerTheme(theme.id);
+      }
+    );
+
+    grid.appendChild(bouton);
+  });
+}
+
+/* =====================================================
+   PHRASES
+===================================================== */
+
+const phrases=[
+  "Chaque pas compte. Continue simplement d'avancer.",
+  "Pas besoin d'aller vite. Avance à ton rythme.",
+  "Une quête après l'autre.",
+  "Même une petite progression reste une progression.",
+  "Tu construis ton aventure, pas à pas.",
+  "Prends ton temps. Les grandes choses se construisent doucement.",
+  "Aujourd'hui n'a pas besoin d'être parfait.",
+  "L'important n'est pas la vitesse, mais le chemin.",
+  "Chaque quête terminée est une victoire.",
+  "Ton aventure avance quand tu le décides."
+];
+
+function afficherPhrase(){
+  document.getElementById(
+    "quote"
+  ).textContent=
+    "« "+
+    phrases[
+      Math.floor(
+        Math.random()*phrases.length
+      )
+    ]+
+    " »";
+}
+
+/* =====================================================
+   CELEBRATION
+===================================================== */
+
+function lancerCelebration(){
+  const zone=
+    document.getElementById(
+      "celebration"
+    );
+
+  zone.innerHTML="";
+
+  const vague=
+    document.createElement("div");
+
+  vague.className=
+    "celebration-wave";
+
+  zone.appendChild(vague);
+
+  for(let i=0;i<35;i++){
+    const particule=
+      document.createElement("div");
+
+    particule.className="particle";
+
+    particule.style.left=
+      Math.random()*100+"%";
+
+    particule.style.animationDelay=
+      Math.random()*.45+"s";
+
+    const taille=
+      4+Math.random()*7;
+
+    particule.style.width=
+      taille+"px";
+
+    particule.style.height=
+      taille+"px";
+
+    zone.appendChild(particule);
+  }
+
+  zone.style.display="block";
+
+  setTimeout(()=>{
+    zone.style.display="none";
+    zone.innerHTML="";
+  },1800);
+}
+
+/* =====================================================
+   ÉVÉNEMENTS
+===================================================== */
+
+document.getElementById(
+  "addBtn"
+).addEventListener(
+  "click",
+  ajouter
+);
+
+document.getElementById(
+  "input"
+).addEventListener(
+  "keydown",
+  event=>{
+    if(event.key==="Enter"){
+      event.preventDefault();
+      ajouter();
+    }
+  }
+);
+
+document.getElementById(
+  "mainChoice"
+).addEventListener(
+  "click",
+  ()=>{
+    choisirType("principale");
+  }
+);
+
+document.getElementById(
+  "secondaryChoice"
+).addEventListener(
+  "click",
+  ()=>{
+    choisirType("secondaire");
+  }
+);
+
+document.getElementById(
+  "search"
+).addEventListener(
+  "input",
+  afficher
+);
+
+document.getElementById(
+  "clearBtn"
+).addEventListener(
+  "click",
+  toutSupprimer
+);
+
+document.getElementById(
+  "undoDelete"
+).addEventListener(
+  "click",
+  annulerSuppression
+);
+
+document.getElementById(
+  "resetBtn"
+).addEventListener(
+  "click",
+  reinitialiserTout
+);
+
+document.getElementById(
+  "undoReset"
+).addEventListener(
+  "click",
+  annulerReinitialisation
+);
+
+document.querySelectorAll(
+  ".menu-btn"
+).forEach(button=>{
+  button.addEventListener(
+    "click",
+    ()=>{
+      ouvrirPage(
+        button.dataset.page
+      );
+    }
+  );
+});
+
+document.querySelectorAll(
+  ".back-page"
+).forEach(button=>{
+  button.addEventListener(
+    "click",
+    retourListeDepuisPage
+  );
+});
+
+document.getElementById(
+  "backDetail"
+).addEventListener(
+  "click",
+  retourListe
+);
+
+document.getElementById(
+  "objectif"
+).addEventListener(
+  "input",
+  ()=>{
+    sauvegardeAutomatique();
+  }
+);
+
+document.getElementById(
+  "description"
+).addEventListener(
+  "input",
+  ()=>{
+    actualiserSousTaches();
+    afficherSousTaches();
+    sauvegarder();
+    afficherProgressionDetailSansValidation();
+  }
+);
+
+document.getElementById(
+  "valeurActuelle"
+).addEventListener(
+  "input",
+  afficherProgressionDetailSansValidation
+);
+
+document.getElementById(
+  "valeurSouhaitee"
+).addEventListener(
+  "input",
+  afficherProgressionDetailSansValidation
+);
+
+document.getElementById(
+  "difficulty"
+).addEventListener(
+  "change",
+  ()=>{
+    sauvegardeAutomatique();
+    afficherRecompense();
+  }
+);
+
+document.getElementById(
+  "description"
+).addEventListener(
+  "keydown",
+  event=>{
+    if(event.key!=="Enter")return;
+
+    const textarea=event.target;
+    const position=textarea.selectionStart;
+
+    const avant=
+      textarea.value.substring(
+        0,
+        position
+      );
+
+    const apres=
+      textarea.value.substring(
+        position
+      );
+
+    const derniereLigne=
+      avant.substring(
+        avant.lastIndexOf("\n")+1
+      );
+
+    if(
+      derniereLigne
+        .trim()
+        .startsWith("-")
+    ){
+      event.preventDefault();
+
+      textarea.value=
+        avant+
+        "\n- "+
+        apres;
+
+      const nouvellePosition=
+        position+3;
+
+      textarea.selectionStart=
+        nouvellePosition;
+
+      textarea.selectionEnd=
+        nouvellePosition;
+
+      actualiserSousTaches();
+      afficherSousTaches();
+      sauvegarder();
+      afficherProgressionDetailSansValidation();
+    }
+  }
+);
+
+window.addEventListener(
+  "beforeunload",
+  ()=>{
+    sauvegardeAutomatique();
+  }
+);
+
+/* =====================================================
+   DÉMARRAGE
+===================================================== */
+
+chargerTheme();
+afficherPhrase();
+afficher();
+sauvegarder();
+
+</script>
+
+<script>
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("./service-worker.js")
+      .then(() => {
+        console.log("Service Worker enregistré !");
+      })
+      .catch(error => {
+        console.error("Erreur Service Worker :", error);
+      });
+  });
+}
+</script>
+
+</body>
+</html>
