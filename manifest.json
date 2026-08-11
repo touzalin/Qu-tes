@@ -2,7 +2,7 @@
   "name": "Mes Quêtes",
   "short_name": "Quêtes",
   "description": "Mes quêtes principales et secondaires",
-  "start_url": "./⚔️Quêtes🛡.html",
+  "start_url": "./index.html",
   "display": "standalone",
   "background_color": "#070707",
   "theme_color": "#FFD900",
