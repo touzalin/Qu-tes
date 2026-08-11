@@ -2,7 +2,7 @@ const CACHE_NAME = "quetes-v1";
 
 const FILES_TO_CACHE = [
   "./",
-  "./⚔️Quêtes🛡.html",
+  "./index.html",
   "./manifest.json",
   "./icon-192.png",
   "./icon-512.png"
